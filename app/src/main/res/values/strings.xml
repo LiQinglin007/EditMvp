@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">editmvp</string>
+
+    <!--创建对话框-->
+    <string name="loading_string">加载中...</string>
+    <!--链接失败-->
+    <string name="onFailure_string">亲，请检查网络</string>
+    <!--服务器异常-->
+    <string name="ServiceError_string">没有从后台拿到数据</string>
+    <string name="NoMore_string">没有更多内容了</string>
+    <string name="text_editdekaron_nopic">读取失败，请重新选择图片</string>
+    <string name="error_system">系统异常，请重试</string>
+
+
+    <!--约束输入的字符串-->
+    <string name="rule_password">0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ</string>
+    <!--字符类型-->
+    <string name="rule_all">0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ`¬!"£$%^*()~=#{}[];':,./?/*-_+&#060;&#062;&#064;&#038;</string>
+    <!--金额-->
+    <string name="digits_money">0123456789.</string>
+
+
+
+
+
+</resources>
