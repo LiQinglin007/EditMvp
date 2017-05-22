@@ -1,16 +1,14 @@
 package com.example.lql.editmvp.basics.ui.fragment.view;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -18,7 +16,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.lql.editmvp.R;
+import com.example.lql.editmvp.adapter.studio.StudioAdapter;
+import com.example.lql.editmvp.basics.base.BaseFragment;
+import com.example.lql.editmvp.basics.preserent.fragment.StudioFragmentPreserent;
+import com.example.lql.editmvp.basics.ui.activity.view.studio.StudioDetailsActivity;
+import com.example.lql.editmvp.basics.ui.fragment.IView.IStudioFragment;
 import com.example.lql.editmvp.bean.StudioListBean;
+import com.example.lql.editmvp.utils.RecyclerView.DividerGridItemDecoration;
+import com.example.lql.editmvp.utils.RecyclerView.OnItemClickListener;
 import com.example.lql.editmvp.utils.T;
 
 import java.util.ArrayList;
@@ -30,7 +35,7 @@ import static com.example.lql.editmvp.utils.RecyclerView.IsBottom.isSlideToBotto
 /**
  * 工作室
  */
-public class StudioFragment extends Fragment implements View.OnClickListener {
+public class StudioFragment extends BaseFragment <IStudioFragment , StudioFragmentPreserent>implements View.OnClickListener ,IStudioFragment{
 
     private static StudioFragment studioFragment;
 
@@ -42,7 +47,6 @@ public class StudioFragment extends Fragment implements View.OnClickListener {
     }
 
 
-    View view;
     TextView defaulttv;//默认
     TextView bondtv;//保证金
     TextView reputationtv;//信誉
@@ -52,11 +56,14 @@ public class StudioFragment extends Fragment implements View.OnClickListener {
 
     EditText search;
 
-//    StudioAdapter mStudioAdapter;//工作室的适配器
+    StudioAdapter mStudioAdapter;//工作室的适配器
 
 
     int Page = 1;
-    String Searchtype = "0";
+    int Rows = 20;
+    int  Searchtype = 0;
+    int getDataType=0;  // 0:上拉  1：下拉
+    boolean IsNeedClear=false;//  是否需要清空数据
 
     ArrayList<StudioListBean.DataBean> mList = new ArrayList<>();
 
@@ -64,27 +71,34 @@ public class StudioFragment extends Fragment implements View.OnClickListener {
     int Count = 1;
     SwipeRefreshLayout mySwipeRefresh;
 
+
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_studio, container, false);
-        initView();
-        return view;
+    protected StudioFragmentPreserent createPresenter() {
+        return new StudioFragmentPreserent();
     }
 
+    @Override
+    protected int createViewLayoutId() {
+        return R.layout.fragment_studio;
+    }
 
+    @Override
+    protected void initData() {
 
-    private void initView() {
-        defaulttv = (TextView) view.findViewById(R.id.studio_default_tv);
-        bondtv = (TextView) view.findViewById(R.id.studio_bond_tv);
-        reputationtv = (TextView) view.findViewById(R.id.studio_reputation_tv);
-        salesvolumetv = (TextView) view.findViewById(R.id.studio_salesvolume_tv);
-        studio_re = (RecyclerView) view.findViewById(R.id.studio_re);
+    }
 
-        search = (EditText) view.findViewById(R.id.search_ed);
-        loading = (LinearLayout) view.findViewById(R.id.loading);
-        mySwipeRefresh = (SwipeRefreshLayout) view.findViewById(R.id.mySwipeRefresh);
-        mySwipeRefresh.setColorSchemeResources(android.R.color.holo_red_light);
+    @Override
+    protected void initView(View rootView, Bundle savedInstanceState) {
+        defaulttv = (TextView) rootView.findViewById(R.id.studio_default_tv);
+        bondtv = (TextView) rootView.findViewById(R.id.studio_bond_tv);
+        reputationtv = (TextView) rootView.findViewById(R.id.studio_reputation_tv);
+        salesvolumetv = (TextView) rootView.findViewById(R.id.studio_salesvolume_tv);
+        studio_re = (RecyclerView) rootView.findViewById(R.id.studio_re);
+
+        search = (EditText) rootView.findViewById(R.id.search_ed);
+        loading = (LinearLayout) rootView.findViewById(R.id.loading);
+        mySwipeRefresh = (SwipeRefreshLayout) rootView.findViewById(R.id.mySwipeRefresh);
+        mySwipeRefresh.setColorSchemeResources(android.R.color.holo_green_light);
         //设置下拉刷新监听
         mySwipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
 
@@ -94,19 +108,33 @@ public class StudioFragment extends Fragment implements View.OnClickListener {
                     @Override
                     public void run() {
                         Page = 1;
-//                        getData(true, 0,false);
+                        getDataType=1;
+                        IsNeedClear = true;
+                        mPresenter.getData(search.getText().toString(),Searchtype,
+                                Page , Rows ,getDataType);
                     }
                 }, 0);
             }
         });
+        studio_re.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mStudioAdapter = new StudioAdapter(getActivity());
+        mStudioAdapter.setList(mList);
+        studio_re.addItemDecoration(new DividerGridItemDecoration(getActivity()));
+        studio_re.setAdapter(mStudioAdapter);
 
+        mStudioAdapter.setOnItemClickLitener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                Intent intent = new Intent(getActivity(), StudioDetailsActivity.class);
+                intent.putExtra("studioid",mList.get(position).getId()+"");
+                startActivity(intent);
+            }
+        });
 
         defaulttv.setOnClickListener(this);
         bondtv.setOnClickListener(this);
         reputationtv.setOnClickListener(this);
         salesvolumetv.setOnClickListener(this);
-
-
 
 
         // 设置搜索框搜索取消搜索按钮
@@ -118,13 +146,11 @@ public class StudioFragment extends Fragment implements View.OnClickListener {
                     ((InputMethodManager) getActivity().getSystemService(INPUT_METHOD_SERVICE))
                             .hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(),
                                     InputMethodManager.HIDE_NOT_ALWAYS);
-                    if (TextUtils.isEmpty(search.getText().toString().trim())) {
-                        T.shortToast(getActivity(), "搜索内容不能为空");
-                        return true;
-                    } else {
-//                        getData(true, 1,true);
-                        return true;
-                    }
+                    IsNeedClear= true;
+                    Page=1;
+
+                    mPresenter.getData(search.getText().toString(),Searchtype,
+                            Page , Rows ,getDataType);
                 }
                 return false;
             }
@@ -143,13 +169,13 @@ public class StudioFragment extends Fragment implements View.OnClickListener {
                 if (dy != 0) {
                     if (isSlideToBottom(recyclerView)) {
                         if (Count > 0) {
-//                            MainActivity.mainly.setClickable(false);
-//                            MainActivity.servicely.setClickable(false);
-//                            MainActivity.studioly.setClickable(false);
-//                            MainActivity.mely.setClickable(false);
                             Page++;
                             loading.setVisibility(View.VISIBLE);
-//                            getData(false, 1,false);
+
+                            IsNeedClear= false;
+                            mPresenter.getData(search.getText().toString(),Searchtype,
+                                    Page , Rows ,getDataType);
+
                         } else {
                             Toast.makeText(getActivity(), "没有更多内容了", Toast.LENGTH_SHORT).show();
                         }
@@ -158,7 +184,9 @@ public class StudioFragment extends Fragment implements View.OnClickListener {
             }
         });
 
-//        getData(true, 1,true);
+
+        mPresenter.getData(search.getText().toString(),Searchtype,
+                Page , Rows ,getDataType);
     }
 
 
@@ -167,28 +195,40 @@ public class StudioFragment extends Fragment implements View.OnClickListener {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.studio_default_tv:
-                Searchtype = "0";
+                Searchtype = 0;
                 setTitleView();
                 defaulttv.setTextColor(getResources().getColor(R.color.color_1AB394));
-//                getData(true, 1,false);
+                IsNeedClear = true;
+                Page=1;
+                mPresenter.getData(search.getText().toString(),Searchtype,
+                        Page , Rows ,getDataType);
                 break;
             case R.id.studio_bond_tv:
-                Searchtype = "1";
+                Searchtype = 1;
                 setTitleView();
                 bondtv.setTextColor(getResources().getColor(R.color.color_1AB394));
-//                getData(true, 1,false);
+                IsNeedClear = true;
+                Page=1;
+                mPresenter.getData(search.getText().toString(),Searchtype,
+                        Page , Rows ,getDataType);
                 break;
             case R.id.studio_reputation_tv:
-                Searchtype = "2";
+                Searchtype = 2;
                 setTitleView();
                 reputationtv.setTextColor(getResources().getColor(R.color.color_1AB394));
-//                getData(true, 1,false);
+                IsNeedClear = true;
+                Page=1;
+                mPresenter.getData(search.getText().toString(),Searchtype,
+                        Page , Rows ,getDataType);
                 break;
             case R.id.studio_salesvolume_tv:
-                Searchtype = "3";
+                Searchtype = 3;
                 setTitleView();
                 salesvolumetv.setTextColor(getResources().getColor(R.color.color_1AB394));
-//                getData(true, 1,false);
+                IsNeedClear = true;
+                Page=1;
+                mPresenter.getData(search.getText().toString(),Searchtype,
+                        Page , Rows ,getDataType);
                 break;
         }
     }
@@ -203,5 +243,29 @@ public class StudioFragment extends Fragment implements View.OnClickListener {
     }
 
 
+    @Override
+    public void showLoading() {
+        creatMyDialog(getActivity().getResources().getString(R.string.loading_string));
+        showMyDialog();
+    }
 
+    @Override
+    public void hineLoading() {
+        hideMyDialog();
+        mySwipeRefresh.setRefreshing(false);
+        loading.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void setDataList(StudioListBean mStudioListBean, int code, String msg) {
+        if(code==0){
+            if(IsNeedClear){
+                mList.clear();
+            }
+            mList.addAll(mStudioListBean.getData());
+            mStudioAdapter.setList(mList);
+        }else{
+            T.shortToast(getActivity(),msg);
+        }
+    }
 }

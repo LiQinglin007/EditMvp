@@ -29,6 +29,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <activity android:name=".basics.ui.activity.view.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -36,6 +37,22 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+
+        <!--公告-->
+        <activity android:name=".basics.ui.activity.view.main.NoticeActivity"
+                  android:screenOrientation="portrait">
+        </activity>
+        <!--公告详情-->
+        <activity android:name=".basics.ui.activity.view.main.NoticeDetailsActivity"
+                  android:screenOrientation="portrait">
+        </activity>
+     <!--公告详情-->
+        <activity android:name=".basics.ui.activity.view.studio.StudioDetailsActivity"
+                  android:screenOrientation="portrait">
+        </activity>
+
+
+
     </application>
 
 </manifest>

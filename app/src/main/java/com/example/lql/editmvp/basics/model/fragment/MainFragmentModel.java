@@ -10,8 +10,6 @@ import com.example.lql.editmvp.bean.MainGetService;
 import com.example.lql.editmvp.bean.NoticeBean;
 import com.example.lql.editmvp.myhttp.MOkCallBack;
 import com.example.lql.editmvp.myhttp.SendRequest;
-import com.example.lql.editmvp.utils.LogUtils;
-import com.example.lql.editmvp.utils.T;
 
 /**
  * Created by Admin on 2017/5/19.
@@ -33,12 +31,12 @@ public class MainFragmentModel implements  IMainFragmentModel{
                     GetImglist roomListBean= JSONObject.parseObject(response,GetImglist.class);
                     modelCallBack.onSuccess(roomListBean);
                 }catch (Exception e){
-                    modelCallBack.onFailure(e.toString());
+                    modelCallBack.onFailure("数据异常");
                 }
             }
             @Override
             public void onFailure(Throwable e) {
-                modelCallBack.onFailure(e.toString());
+                modelCallBack.onFailure("亲，请检查网络");
             }
         });
     }
@@ -56,14 +54,13 @@ public class MainFragmentModel implements  IMainFragmentModel{
                     MainGetService mainGetService=JSON.parseObject(response,MainGetService.class);
                     modelCallBack.onSuccess(mainGetService);
                 }catch (Exception e){
-                    modelCallBack.onFailure(e.toString());
-                    LogUtils.Loge(e.toString());
+                    modelCallBack.onFailure("数据异常");
                 }
             }
 
             @Override
             public void onFailure(Throwable e) {
-                modelCallBack.onFailure(e.toString());
+                modelCallBack.onFailure("亲，请检查网络");
             }
         });
     }
@@ -81,14 +78,13 @@ public class MainFragmentModel implements  IMainFragmentModel{
                     NoticeBean mBean= JSON.parseObject(response,NoticeBean.class);
                     modelCallBack.onSuccess(mBean);
                 }catch (Exception e){
-                    modelCallBack.onFailure(e.toString());
-                    LogUtils.Loge(e.toString());
+                    modelCallBack.onFailure("数据异常");
                 }
             }
 
             @Override
             public void onFailure(Throwable e) {
-                modelCallBack.onFailure(e.toString());
+                modelCallBack.onFailure("亲，请检查网络");
             }
         });
     }

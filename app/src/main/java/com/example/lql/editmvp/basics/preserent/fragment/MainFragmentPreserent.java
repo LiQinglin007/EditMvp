@@ -1,4 +1,4 @@
-package com.example.lql.editmvp.basics.preserent;
+package com.example.lql.editmvp.basics.preserent.fragment;
 
 import android.os.Handler;
 import android.os.Message;
@@ -55,7 +55,7 @@ public class MainFragmentPreserent  extends BasePreserent <IMainFragment> implem
             @Override
             public void onSuccess(MainGetService response) {
                 mHandler.sendEmptyMessage(0);
-                mIMainFragment.setServiceList(response , 1 ,"");
+                mIMainFragment.setServiceList(response , 0 ,"");
             }
 
             @Override
@@ -74,7 +74,7 @@ public class MainFragmentPreserent  extends BasePreserent <IMainFragment> implem
             @Override
             public void onSuccess(NoticeBean response) {
                 mHandler.sendEmptyMessage(0);
-                mIMainFragment.setNotice(response , 1 ,"");
+                mIMainFragment.setNotice(response , 0 ,"");
             }
 
             @Override

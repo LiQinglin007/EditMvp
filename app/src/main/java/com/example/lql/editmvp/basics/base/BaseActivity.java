@@ -8,9 +8,11 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 
 import com.example.lql.editmvp.R;
+import com.example.lql.editmvp.utils.MyStatusBarUtil;
 
 
 /**
@@ -39,7 +41,7 @@ public abstract class BaseActivity<V,P extends BasePreserent<V>> extends Fragmen
             System.out.println("布局文件丢失");
         }
 
-//        MyStatusBarUtil.setStatusColor(BaseActivity.this, ContextCompat.getColor(BaseActivity.this, R.color.tool_bar));//设置状态栏颜色
+        MyStatusBarUtil.setStatusColor(BaseActivity.this, ContextCompat.getColor(BaseActivity.this, R.color.tool_bar));//设置状态栏颜色
 
         if (null!=creatPresenter()){
             mPresenter=creatPresenter();

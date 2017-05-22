@@ -1,4 +1,4 @@
-package com.example.lql.editmvp.basics.preserent;
+package com.example.lql.editmvp.basics.preserent.fragment;
 
 /**
  * Created by Admin on 2017/5/19.

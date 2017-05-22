@@ -2,7 +2,6 @@ package com.example.lql.editmvp.adapter.main;
 
 import android.content.Context;
 import android.graphics.Paint;
-import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +13,7 @@ import com.example.lql.editmvp.R;
 import com.example.lql.editmvp.bean.MainGetService;
 import com.example.lql.editmvp.myhttp.MyUrl;
 import com.example.lql.editmvp.utils.FinalData;
+import com.example.lql.editmvp.utils.Glide.GlidePicUtils;
 import com.example.lql.editmvp.utils.PublicStaticData;
 import com.example.lql.editmvp.utils.RecyclerView.OnItemClickListener;
 
@@ -61,8 +61,6 @@ public class MainServiceApapter extends RecyclerView.Adapter<MainServiceApapter.
         return FinalData.TYPE_NORMAL;
     }
 
-
-
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if(mHeaderView != null && viewType == FinalData.TYPE_HEADER) return new MainServiceApapter.ViewHolder(mHeaderView);
@@ -71,13 +69,20 @@ public class MainServiceApapter extends RecyclerView.Adapter<MainServiceApapter.
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
         if(getItemViewType(position) == FinalData.TYPE_HEADER) return;
 
         final int pos = getRealPosition(holder);
         if(holder instanceof MainServiceApapter.ViewHolder) {
 
-
+            if(null!=mClick){
+                 holder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        mClick.onItemClick( holder.itemView,holder.getLayoutPosition());
+                    }
+                });
+            }
 
             holder.item_main_name_tv.setText(mList.get(pos).getServiceName()+"");
 //        Type1:检测查重 2：修改降重3：编辑速审
@@ -122,10 +127,9 @@ public class MainServiceApapter extends RecyclerView.Adapter<MainServiceApapter.
             //月销量
             holder.item_main_number_tv.setText("月销量："+mList.get(pos).getCount());
             //设置图片
-            Uri uri = Uri.parse(MyUrl.Pic+mList.get(pos).getPicture());
-//        Uri uri = Uri.parse("https://www.baidu.com/img/bd_logo1.png");
 
-            holder.item_main_img.setImageURI(uri);
+            GlidePicUtils.NormalPic(mContext,MyUrl.Pic+mList.get(pos).getPicture(),holder.item_main_img);
+
         }
     }
 

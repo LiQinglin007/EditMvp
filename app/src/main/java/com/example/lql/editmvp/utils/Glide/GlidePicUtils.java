@@ -33,8 +33,8 @@ public class GlidePicUtils {
         Glide.with(mContext)
                 .load(Url)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)//设置缓存（缓存源资源和转换后的资源）
-                .placeholder(R.mipmap.ic_launcher)//加载中的图片
-                .error(R.mipmap.ic_launcher)//加载失败的图片
+                .placeholder(R.drawable.gongzuoshi1)//加载中的图片
+                .error(R.drawable.gongzuoshi1)//加载失败的图片
 //                .thumbnail(0.1f)//先加载缩略图，再加载大图
                 .into(img);
     }
@@ -89,8 +89,8 @@ public class GlidePicUtils {
                 .load(Url)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)//设置缓存（缓存源资源和转换后的资源）
                 .transform(new GlideCircleTransform(mContext))//圆形图片
-                .placeholder(R.mipmap.ic_launcher)//加载中的图片
-                .error(R.mipmap.ic_launcher)//加载失败的图片
+                .placeholder(R.drawable.gongzuoshi1)//加载中的图片
+                .error(R.drawable.gongzuoshi1)//加载失败的图片
 //                .thumbnail(0.1f)//先加载缩略图，再加载大图
                 .into(img);
     }
@@ -122,8 +122,8 @@ public class GlidePicUtils {
                 .diskCacheStrategy(DiskCacheStrategy.ALL)//设置缓存（缓存源资源和转换后的资源）
 //                .transform(new GlideRoundTransform(mContext))//圆角图片
                 .transform(new GlideRoundTransform(mContext,10))//圆角图片
-                .placeholder(R.mipmap.ic_launcher)//加载中的图片
-                .error(R.mipmap.ic_launcher)//加载失败的图片
+                .placeholder(R.drawable.gongzuoshi1)//加载中的图片
+                .error(R.drawable.gongzuoshi1)//加载失败的图片
 //                .thumbnail(0.1f)//先加载缩略图，再加载大图
                 .into(img);
     }
@@ -150,8 +150,8 @@ public class GlidePicUtils {
                 .load(Url)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)//设置缓存（缓存源资源和转换后的资源）
                 .transform(new GlideCircleTransform(mContext))//圆形图片
-                .placeholder(R.mipmap.ic_launcher)//加载中的图片
-                .error(R.mipmap.ic_launcher)//加载失败的图片
+                .placeholder(R.drawable.gongzuoshi1)//加载中的图片
+                .error(R.drawable.gongzuoshi1)//加载失败的图片
 //                .thumbnail(0.1f)//先加载缩略图，再加载大图
                 .into(img);
 

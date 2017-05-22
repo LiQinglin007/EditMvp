@@ -2,11 +2,19 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
               android:background="@color/background"
               android:orientation="vertical">
 
-    <!--在这里加上广告小喇叭-->
+    <!--轮播图-->
+    <cn.bingoogolapple.bgabanner.BGABanner
+        android:id="@+id/banner_main_depth"
+        style="@style/BannerDefaultStyle"
+        app:banner_pointDrawable="@drawable/selector_banner"
+        app:banner_transitionEffect="depth"/>
 
+
+    <!--在这里加上广告小喇叭-->
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
