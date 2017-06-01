@@ -12,6 +12,9 @@ import com.example.lql.editmvp.bean.GetImglist;
 import com.example.lql.editmvp.bean.MainGetService;
 import com.example.lql.editmvp.bean.NoticeBean;
 
+import static com.example.lql.editmvp.utils.FinalData.OKHTTP_FAILURE;
+import static com.example.lql.editmvp.utils.FinalData.OKHTTP_SUCCESS;
+
 /**
  * 类描述：首页
  * 作  者：李清林
@@ -37,12 +40,12 @@ public class MainFragmentPreserent  extends BasePreserent <IMainFragment> implem
             @Override
             public void onSuccess(GetImglist response) {
                 mHandler.sendEmptyMessage(0);
-                mIMainFragment.setImageList(response ,0 ,"");
+                mIMainFragment.setImageList(response , OKHTTP_SUCCESS ,"");
             }
             @Override
             public void onFailure(String e) {
                 mHandler.sendEmptyMessage(0);
-                mIMainFragment.setImageList(null ,1 ,e);
+                mIMainFragment.setImageList(null , OKHTTP_FAILURE ,e);
             }
         });
     }
@@ -55,13 +58,13 @@ public class MainFragmentPreserent  extends BasePreserent <IMainFragment> implem
             @Override
             public void onSuccess(MainGetService response) {
                 mHandler.sendEmptyMessage(0);
-                mIMainFragment.setServiceList(response , 0 ,"");
+                mIMainFragment.setServiceList(response , OKHTTP_SUCCESS ,"");
             }
 
             @Override
             public void onFailure(String e) {
                 mHandler.sendEmptyMessage(0);
-                mIMainFragment.setServiceList(null , 1 ,e);
+                mIMainFragment.setServiceList(null , OKHTTP_FAILURE ,e);
             }
         });
     }
@@ -74,13 +77,13 @@ public class MainFragmentPreserent  extends BasePreserent <IMainFragment> implem
             @Override
             public void onSuccess(NoticeBean response) {
                 mHandler.sendEmptyMessage(0);
-                mIMainFragment.setNotice(response , 0 ,"");
+                mIMainFragment.setNotice(response , OKHTTP_SUCCESS ,"");
             }
 
             @Override
             public void onFailure(String e) {
                 mHandler.sendEmptyMessage(0);
-                mIMainFragment.setNotice(null , 0 , e);
+                mIMainFragment.setNotice(null , OKHTTP_FAILURE , e);
             }
         });
     }

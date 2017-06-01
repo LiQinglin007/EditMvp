@@ -29,6 +29,7 @@ import com.example.lql.editmvp.utils.T;
 import java.util.ArrayList;
 
 import static android.content.Context.INPUT_METHOD_SERVICE;
+import static com.example.lql.editmvp.utils.FinalData.OKHTTP_SUCCESS;
 import static com.example.lql.editmvp.utils.RecyclerView.IsBottom.isSlideToBottom;
 
 
@@ -258,7 +259,7 @@ public class StudioFragment extends BaseFragment <IStudioFragment , StudioFragme
 
     @Override
     public void setDataList(StudioListBean mStudioListBean, int code, String msg) {
-        if(code==0){
+        if(code==OKHTTP_SUCCESS){
             if(IsNeedClear){
                 mList.clear();
             }

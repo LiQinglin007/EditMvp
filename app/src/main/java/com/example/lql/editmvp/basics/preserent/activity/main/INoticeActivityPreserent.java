@@ -1,4 +1,4 @@
-package com.example.lql.editmvp.basics.preserent.activity;
+package com.example.lql.editmvp.basics.preserent.activity.main;
 
 /**
  * Created by Admin on 2017/5/22.

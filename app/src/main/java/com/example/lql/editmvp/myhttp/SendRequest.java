@@ -28,6 +28,26 @@ public class SendRequest {
         MyPost(formBody, MyUrl.UserLogin, myCallBack);
     }
 
+    /**
+     * 36、修改密码
+     *
+     * @param oldPwd      旧密码
+     * @param newPwd      新密码
+     * @param mOkCallBack
+     */
+    public static void UpdataPassWord(String Userid, String oldPwd, String newPwd, MOkCallBack mOkCallBack) {
+
+
+        FormBody formBody = new FormBody.Builder().
+                add("userId", Userid).
+                add("oldPwd", oldPwd).
+                add("newPwd", newPwd).
+                add("affirmPwd", newPwd).
+                build();
+        MyPost(formBody, MyUrl.UpdataPassWord, mOkCallBack);
+    }
+
+
 
     /**
      * 3、获取验证码
@@ -243,5 +263,30 @@ public class SendRequest {
         OkHttpUtils.MyPost(formBody, MyUrl.UserDetail, mOkCallBack);
     }
 
+    /**
+     * 版本更新
+     *
+     * @param mOkCallBack
+     */
+    public static void UpdateVersion(MOkCallBack mOkCallBack) {
+        FormBody formBody = new FormBody.Builder()
+                .build();
+        OkHttpUtils.MyPost(formBody, MyUrl.UpdateVersion, mOkCallBack);
+    }
 
+    /**
+     * 29、意见反馈
+     *
+     * @param Conetnt     意见
+     * @param mOkCallBack
+     */
+    public static void AddSuggestion(String Userid, String Conetnt, MOkCallBack mOkCallBack) {
+
+
+        FormBody formBody = new FormBody.Builder()
+                .add("Userid", Userid)
+                .add("Suggestion_", Conetnt)
+                .build();
+        MyPost(formBody, MyUrl.AddSuggestion, mOkCallBack);
+    }
 }

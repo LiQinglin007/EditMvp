@@ -10,13 +10,15 @@ import android.widget.TextView;
 import com.example.lql.editmvp.R;
 import com.example.lql.editmvp.adapter.main.NoticeAdapter;
 import com.example.lql.editmvp.basics.base.BaseActivity;
-import com.example.lql.editmvp.basics.preserent.activity.NoticeActivityPreserent;
+import com.example.lql.editmvp.basics.preserent.activity.main.NoticeActivityPreserent;
 import com.example.lql.editmvp.basics.ui.activity.IView.INoticeActivity;
 import com.example.lql.editmvp.bean.NoticeBean;
 import com.example.lql.editmvp.utils.RecyclerView.OnItemClickListener;
 import com.example.lql.editmvp.utils.T;
 
 import java.util.ArrayList;
+
+import static com.example.lql.editmvp.utils.FinalData.OKHTTP_SUCCESS;
 
 /**
  * 类描述：公告页面
@@ -92,7 +94,7 @@ public class NoticeActivity extends BaseActivity<INoticeActivity,NoticeActivityP
 
     @Override
     public void setNotice(NoticeBean mNoticeBean, int code, String msg) {
-        if(code==0){
+        if(code==OKHTTP_SUCCESS){
             mList.clear();
             mList.addAll(mNoticeBean.getData());
             mNoticeAdapter.setList(mList);

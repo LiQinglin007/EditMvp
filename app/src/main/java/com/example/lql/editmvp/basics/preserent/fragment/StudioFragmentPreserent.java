@@ -7,6 +7,9 @@ import com.example.lql.editmvp.basics.model.fragment.StudioFragmentModel;
 import com.example.lql.editmvp.basics.ui.fragment.IView.IStudioFragment;
 import com.example.lql.editmvp.bean.StudioListBean;
 
+import static com.example.lql.editmvp.utils.FinalData.OKHTTP_FAILURE;
+import static com.example.lql.editmvp.utils.FinalData.OKHTTP_SUCCESS;
+
 /**
  * 类描述：工作室列表
  * 作  者：李清林
@@ -41,13 +44,13 @@ public class StudioFragmentPreserent extends BasePreserent<IStudioFragment> impl
             @Override
             public void onSuccess(StudioListBean response) {
                 mIStudioFragment.hineLoading();
-                mIStudioFragment.setDataList(response,0,"");
+                mIStudioFragment.setDataList(response,OKHTTP_SUCCESS,"");
             }
 
             @Override
             public void onFailure(String e) {
                 mIStudioFragment.hineLoading();
-                mIStudioFragment.setDataList(null , 0 , e);
+                mIStudioFragment.setDataList(null , OKHTTP_FAILURE , e);
             }
         });
     }

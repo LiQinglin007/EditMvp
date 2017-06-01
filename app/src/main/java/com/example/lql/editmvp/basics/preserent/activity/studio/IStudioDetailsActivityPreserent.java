@@ -1,4 +1,4 @@
-package com.example.lql.editmvp.basics.preserent.activity;
+package com.example.lql.editmvp.basics.preserent.activity.studio;
 
 /**
  * 类描述：工作室详情

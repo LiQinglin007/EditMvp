@@ -10,13 +10,13 @@
 
     <include layout="@layout/include_title_layout"></include>
 
-    <android.support.v7.widget.RecyclerView
+    <ListView
         android:id="@+id/studio_re"
         android:layout_width="match_parent"
         android:layout_weight="1"
         android:layout_height="0dp">
 
-    </android.support.v7.widget.RecyclerView>
+    </ListView>
 
     <View
         android:background="@color/color_e0e0e0"

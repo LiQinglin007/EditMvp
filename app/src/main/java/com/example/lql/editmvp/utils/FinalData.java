@@ -14,4 +14,7 @@ public class FinalData {
     public static final int TYPE_HEADER = 0;
     public static final int TYPE_NORMAL = 1;
 
+    public static final int OKHTTP_SUCCESS = 0; //网络请求成功
+    public static final int OKHTTP_FAILURE = 1; //网络请求失败
+
 }

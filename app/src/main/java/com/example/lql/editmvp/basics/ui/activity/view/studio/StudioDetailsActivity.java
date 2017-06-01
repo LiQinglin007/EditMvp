@@ -10,29 +10,33 @@ import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.lql.editmvp.R;
 import com.example.lql.editmvp.adapter.studio.StudioDetailsAdapter;
 import com.example.lql.editmvp.basics.base.BaseActivity;
-import com.example.lql.editmvp.basics.preserent.activity.StudioDetailsActivityPreserent;
+import com.example.lql.editmvp.basics.preserent.activity.studio.StudioDetailsActivityPreserent;
 import com.example.lql.editmvp.basics.ui.activity.IView.IStudioDetailsActivity;
+import com.example.lql.editmvp.basics.ui.activity.view.main.LoginActivity;
+import com.example.lql.editmvp.basics.ui.activity.view.service.ServiceDetailsActivity;
 import com.example.lql.editmvp.bean.MyBasebean;
 import com.example.lql.editmvp.bean.StudioDetailsBean;
 import com.example.lql.editmvp.myhttp.MyUrl;
 import com.example.lql.editmvp.utils.Glide.GlidePicUtils;
 import com.example.lql.editmvp.utils.PreferenceUtils;
+import com.example.lql.editmvp.utils.PublicStaticData;
 import com.example.lql.editmvp.utils.T;
 
 import java.util.ArrayList;
 
+import static com.example.lql.editmvp.utils.FinalData.OKHTTP_SUCCESS;
 
 
 /**
@@ -46,7 +50,7 @@ public class StudioDetailsActivity extends BaseActivity <IStudioDetailsActivity,
 
     final public int REQUEST_CODE_CALLPHONE_PERMISSIONS = 10001;//拨打电话
 
-    private android.support.v7.widget.RecyclerView studiore;
+    private ListView studiore;
     private ImageView studiocollectionimg;
     private LinearLayout studiocollectionly;
     private LinearLayout studioqqly;
@@ -79,7 +83,6 @@ public class StudioDetailsActivity extends BaseActivity <IStudioDetailsActivity,
 
     String studioId = "";
     StudioDetailsBean mBean;
-
     String Userid = "";
 
     @Override
@@ -104,16 +107,15 @@ public class StudioDetailsActivity extends BaseActivity <IStudioDetailsActivity,
         this.studioqqly = (LinearLayout) findViewById(R.id.studio_qq_ly);
         this.studiocollectionly = (LinearLayout) findViewById(R.id.studio_collection_ly);
         this.studiocollectionimg = (ImageView) findViewById(R.id.studio_collection_img);
-        this.studiore = (RecyclerView) findViewById(R.id.studio_re);
+        this.studiore = (ListView) findViewById(R.id.studio_re);
         this.studio_collection_tv = (TextView) findViewById(R.id.studio_collection_tv);
 
 
         HeadView = getLayoutInflater().inflate(R.layout.head_studio_details, null);
 
-        studiore.setLayoutManager(new LinearLayoutManager(this));
         mStudioDetailsAdapter = new StudioDetailsAdapter(StudioDetailsActivity.this);
         mStudioDetailsAdapter.setList(mList);
-        mStudioDetailsAdapter.setHeadView(HeadView);
+        studiore.addHeaderView(HeadView);
         studiore.setAdapter(mStudioDetailsAdapter);
 
         studioName = (TextView) HeadView.findViewById(R.id.heat_studiodetails_name_tv);
@@ -144,6 +146,25 @@ public class StudioDetailsActivity extends BaseActivity <IStudioDetailsActivity,
         studioId=getIntent().getStringExtra("studioid");
 
         mPresenter.ShopDetail(Userid, studioId);
+
+        studiore.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                if (i == 0) {
+                    return;
+                }
+                PublicStaticData.ServiceId = mList.get(i - 1).getProductId() + "";
+//                "Type": 1								1：检测查重2：修改降重3：编辑速审
+                if (mList.get(i - 1).getType() == 1) {
+                    PublicStaticData.PopNumberTitle = 2;
+                } else if (mList.get(i - 1).getType() == 2) {
+                    PublicStaticData.PopNumberTitle = 3;
+                } else if (mList.get(i - 1).getType() == 3) {
+                    PublicStaticData.PopNumberTitle = 1;
+                }
+                startActivity(new Intent(StudioDetailsActivity.this, ServiceDetailsActivity.class));
+            }
+        });
     }
 
 
@@ -209,7 +230,7 @@ public class StudioDetailsActivity extends BaseActivity <IStudioDetailsActivity,
                     mPresenter.collection(Userid, studioId);
                 }else{
                     T.shortToast(StudioDetailsActivity.this, "请先登录");
-//                    startActivity(new Intent(StudioDetailsActivity.this, LoginActivity.class));
+                    startActivity(new Intent(StudioDetailsActivity.this, LoginActivity.class));
                 }
                 break;
             case R.id.studio_qq_ly://QQ
@@ -297,12 +318,10 @@ public class StudioDetailsActivity extends BaseActivity <IStudioDetailsActivity,
     @Override
     public void setDta(StudioDetailsBean mBean, int code, String msg) {
 
-        if(code==0){
+        if(code==OKHTTP_SUCCESS){
+            this.mBean=mBean;
             if (mBean.getResultCode() == 0) {
-                if (!TextUtils.isEmpty(mBean.getData().getHeadImg())) {
-                    StudioPic.setImageURI(Uri.parse(MyUrl.Pic + mBean.getData().getHeadImg()));//图片
-//                        StudioPic.setImageURI(Uri.parse(MyUrl.Pic+"/Upload/img/20161210/20161210021225.jpg"));//图片
-                }
+                GlidePicUtils.NormalPic(StudioDetailsActivity.this,MyUrl.Pic + mBean.getData().getHeadImg(),StudioPic);
                 studioName.setText(mBean.getData().getWorkName() + "");
                 studioName1.setText("诚信保证金：" + mBean.getData().getDeposit() + "");
                 studioName2.setText("月销量：" + mBean.getData().getCount() + "");
@@ -342,7 +361,7 @@ public class StudioDetailsActivity extends BaseActivity <IStudioDetailsActivity,
 
     @Override
     public void setCollection(MyBasebean mNoticeBean, int code, String msg) {
-        if(code==0){
+        if(code==OKHTTP_SUCCESS){
             T.shortToast(getApplicationContext(),mNoticeBean.getMsg());
             if (mNoticeBean.getResultCode() == 0) {
                 if (mBean.getData().getCollect() == 0) {

@@ -14,14 +14,18 @@ import com.bumptech.glide.Glide;
 import com.example.lql.editmvp.R;
 import com.example.lql.editmvp.adapter.main.MainServiceApapter;
 import com.example.lql.editmvp.basics.base.BaseFragment;
+import com.example.lql.editmvp.basics.ui.activity.view.main.ChooseCheckTypeActivity;
 import com.example.lql.editmvp.basics.preserent.fragment.MainFragmentPreserent;
 import com.example.lql.editmvp.basics.ui.activity.view.main.NoticeActivity;
+import com.example.lql.editmvp.basics.ui.activity.view.service.ServiceDetailsActivity;
 import com.example.lql.editmvp.basics.ui.fragment.IView.IMainFragment;
 import com.example.lql.editmvp.bean.GetImglist;
 import com.example.lql.editmvp.bean.MainGetService;
 import com.example.lql.editmvp.bean.NoticeBean;
 import com.example.lql.editmvp.myhttp.MyUrl;
 import com.example.lql.editmvp.utils.LogUtils;
+import com.example.lql.editmvp.utils.PublicStaticData;
+import com.example.lql.editmvp.utils.RecyclerView.OnItemClickListener;
 import com.example.lql.editmvp.utils.T;
 import com.example.lql.editmvp.view.SwitchViewGroup;
 
@@ -29,6 +33,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.bingoogolapple.bgabanner.BGABanner;
+
+import static com.example.lql.editmvp.utils.FinalData.OKHTTP_SUCCESS;
 
 
 /**
@@ -74,7 +80,25 @@ public class MainFragment extends BaseFragment<IMainFragment , MainFragmentPrese
 
     @Override
     public void onClick(View view) {
-
+        switch (view.getId()){
+            case R.id.main_submission_img://投稿
+                PublicStaticData.PopNumberTitle=1;
+                PublicStaticData.MainFragmentNmuber = 1;
+                sendBrocast();
+                break;
+            case R.id.main_check_img://查重
+                startActivity(new Intent(getActivity(), ChooseCheckTypeActivity.class));
+                break;
+            case R.id.main_flag_img://降重
+                PublicStaticData.PopNumberTitle=3;
+                PublicStaticData.MainFragmentNmuber = 1;
+                sendBrocast();
+                break;
+            case R.id.main_service_img://我的服务
+                PublicStaticData.MainFragmentNmuber = 3;
+                sendBrocast();
+                break;
+        }
     }
 
     @Override
@@ -119,6 +143,25 @@ public class MainFragment extends BaseFragment<IMainFragment , MainFragmentPrese
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerView.setAdapter(mMainServiceApapter);
 
+        mMainServiceApapter.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+//                Type1:检测查重 2：修改降重3：编辑速审
+                if(mDataBeanArrayList.get(position).getType()==1){
+                    //1：速审  2：查重   3：降重
+                    PublicStaticData.PopNumberTitle=2;
+                }else  if(mDataBeanArrayList.get(position).getType()==2){
+                    PublicStaticData.PopNumberTitle=3;
+                }else{
+                    PublicStaticData.PopNumberTitle=1;
+                }
+//                sendBrocast();
+                PublicStaticData.ServiceId=mDataBeanArrayList.get(position).getId()+"";
+                startActivity(new Intent(getActivity(), ServiceDetailsActivity.class));
+            }
+        });
+
+
         mBGABanner.setAdapter(new BGABanner.Adapter<ImageView, String>() {
             @Override
             public void fillBannerItem(BGABanner banner, ImageView itemView, String model, int position) {
@@ -150,7 +193,7 @@ public class MainFragment extends BaseFragment<IMainFragment , MainFragmentPrese
     @Override
     public void setImageList(GetImglist mGetImglist, int code , String msg) {
         LogUtils.Loge(mGetImglist.toString()+"mGetImglist");
-        if(code==0){
+        if(code==OKHTTP_SUCCESS){
             picList.clear();
             dataList.clear();
             for (int i = 0; i < mGetImglist.getData().size(); i++) {
@@ -167,7 +210,7 @@ public class MainFragment extends BaseFragment<IMainFragment , MainFragmentPrese
     @Override
     public void setServiceList(MainGetService mainGetService, int code , String msg) {
         LogUtils.Loge(mainGetService.toString()+"mainGetService");
-        if(code==0){
+        if(code==OKHTTP_SUCCESS){
             mDataBeanArrayList.clear();
             mDataBeanArrayList.addAll(mainGetService.getData());
             mMainServiceApapter.setList(mDataBeanArrayList);
@@ -179,7 +222,7 @@ public class MainFragment extends BaseFragment<IMainFragment , MainFragmentPrese
     @Override
     public void setNotice(NoticeBean mNoticeBean, int code , String msg) {
         LogUtils.Loge(mNoticeBean.toString()+"mNoticeBean");
-        if(code==0){
+        if(code==OKHTTP_SUCCESS){
             for (int i = 0; i < mNoticeBean.getData().size(); i++) {
                 datas.add(mNoticeBean.getData().get(i).getNotice());
             }
@@ -197,5 +240,10 @@ public class MainFragment extends BaseFragment<IMainFragment , MainFragmentPrese
         }
     }
 
+    public void sendBrocast(){
+        Intent intent = new Intent();
+        intent.setAction("com.lql.setview");
+        getActivity().sendBroadcast(intent);
+    }
 
 }

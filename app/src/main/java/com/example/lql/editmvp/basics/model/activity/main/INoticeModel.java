@@ -1,4 +1,4 @@
-package com.example.lql.editmvp.basics.model.activity;
+package com.example.lql.editmvp.basics.model.activity.main;
 
 import com.example.lql.editmvp.basics.model.ModelCallBack;
 

@@ -18,19 +18,21 @@
 
     <!--在SDCard中创建与删除文件权限 -->
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
-     <!--往SDCard写入数据权限 -->
+    <!--往SDCard写入数据权限 -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
     <application
+        android:name="com.example.lql.editmvp.application.MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:name="com.example.lql.editmvp.application.MyApplication"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".basics.ui.activity.view.MainActivity">
+        <activity
+            android:name=".basics.ui.activity.view.main.SplashActivity"
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -38,19 +40,62 @@
             </intent-filter>
         </activity>
 
-        <!--公告-->
-        <activity android:name=".basics.ui.activity.view.main.NoticeActivity"
-                  android:screenOrientation="portrait">
-        </activity>
-        <!--公告详情-->
-        <activity android:name=".basics.ui.activity.view.main.NoticeDetailsActivity"
-                  android:screenOrientation="portrait">
-        </activity>
-     <!--公告详情-->
-        <activity android:name=".basics.ui.activity.view.studio.StudioDetailsActivity"
-                  android:screenOrientation="portrait">
+        <activity
+            android:name=".basics.ui.activity.view.MainActivity"
+            android:screenOrientation="portrait">
+
         </activity>
 
+        <!--公告-->
+        <activity
+            android:name=".basics.ui.activity.view.main.NoticeActivity"
+            android:screenOrientation="portrait">
+        </activity>
+
+        <!--公告详情-->
+        <activity
+            android:name=".basics.ui.activity.view.main.NoticeDetailsActivity"
+            android:screenOrientation="portrait">
+        </activity>
+        <!--公告详情-->
+        <activity
+            android:name=".basics.ui.activity.view.studio.StudioDetailsActivity"
+            android:screenOrientation="portrait">
+        </activity>
+
+        <!--服务详情-->
+        <activity
+            android:name=".basics.ui.activity.view.service.ServiceDetailsActivity"
+            android:screenOrientation="portrait">
+        </activity>
+
+        <!--选择查重类型页面-->
+        <activity
+            android:name=".basics.ui.activity.view.main.ChooseCheckTypeActivity"
+            android:screenOrientation="portrait"></activity>
+
+        <!--登录注册-->
+        <activity
+            android:name=".basics.ui.activity.view.main.LoginActivity"
+            android:screenOrientation="portrait"></activity>
+
+        <!--忘记密码-->
+        <activity
+            android:name=".basics.ui.activity.view.main.ForgetPwdActivity"
+            android:screenOrientation="portrait"
+            ></activity>
+        <!--修改密码-->
+        <activity
+            android:name=".basics.ui.activity.view.me.UpdatePwdActivity"
+            android:screenOrientation="portrait"></activity>
+        <!--意见反馈-->
+        <activity
+            android:name=".basics.ui.activity.view.me.FeedbackActivity"
+            android:screenOrientation="portrait"></activity>
+        <!--意见反馈-->
+        <activity
+            android:name=".basics.ui.activity.view.me.AboutUsActivity"
+            android:screenOrientation="portrait"></activity>
 
 
     </application>

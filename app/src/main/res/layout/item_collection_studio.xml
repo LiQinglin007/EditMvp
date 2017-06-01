@@ -16,6 +16,7 @@
         android:id="@+id/item_collection_studio_img"
         android:layout_width="@dimen/px_160"
         android:layout_height="@dimen/px_160"
+        android:scaleType="fitXY"
         android:src="@drawable/gongzuoshi_big"/>
 
     <LinearLayout

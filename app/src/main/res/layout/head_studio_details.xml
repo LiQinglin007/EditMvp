@@ -20,6 +20,7 @@
 
         <ImageView
             android:id="@+id/heat_studiodetails_img"
+            android:scaleType="fitXY"
             android:layout_width="@dimen/px_134"
             android:layout_height="@dimen/px_134"
             android:src="@drawable/gongzuoshi1"/>
